@@ -16,10 +16,17 @@ export class MCPServerManager {
    * Validate timeout value
    * Accepts timeout in milliseconds
    */
-  private parseTimeout(timeout: number): number {
-    if (timeout <= 0) {
-      console.warn(`Invalid timeout value: ${timeout}, using default 120000ms`);
-      return 120000; // 2 minutes default
+  private parseTimeout(timeout?: number): number {
+    if (!timeout || timeout <= 0) {
+      // Logic: if undefined, null, 0, or negative, use default
+      // Note: !timeout handles 0, undefined, null, NaN
+      const defaultTimeout = 120000; // 2 minutes
+      if (timeout !== undefined) {
+        console.warn(
+          `Invalid timeout value: ${timeout}, using default ${defaultTimeout}ms`,
+        );
+      }
+      return defaultTimeout;
     }
     return timeout;
   }
